@@ -1,0 +1,37 @@
+<h1>Measurements#showMeasurements</h1>
+<p>Find me in app/views/measurements/showMeasurements.html.erb</p>
+<%= high_chart_globals(@chart_globals) %>
+<%= high_chart("some_id", @chart) %>
+<br><br><br><br><br><br>
+<%= high_chart("some_id2", @test) %>
+
+<br><br><br><br><br><br>
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+<script src="https://code.highcharts.com/stock/highstock.js"></script>
+<script src="https://code.highcharts.com/stock/modules/exporting.js"></script>
+<script>
+$.getJSON('https://www.highcharts.com/samples/data/jsonp.php?filename=aapl-c.json&callback=?', function (data) {
+    // Create the chart
+    Highcharts.stockChart('container', {
+
+
+        rangeSelector: {
+            selected: 1
+        },
+
+        title: {
+            text: 'AAPL Stock Price'
+        },
+
+        series: [{
+            name: 'AAPL',
+            data: data,
+            tooltip: {
+                valueDecimals: 2
+            }
+        }]
+    });
+});
+
+</script>
+<div id="container" style="height: 400px; min-width: 310px"></div>
