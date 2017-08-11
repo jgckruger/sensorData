@@ -15,8 +15,23 @@ class MeasurementsController < ApplicationController
   end
 
   # GET /measurements/new
+  # http://localhost:3000/measurements/new?temperature=27.4&humidity=14&lightLevel=33&device_id=2
   def new
-    @measurement = Measurement.new
+    if measurement_params_no_require.any?
+      @measurement = Measurement.new(measurement_params_no_require)
+
+      respond_to do |format|
+        if @measurement.save
+          format.html { redirect_to @measurement, notice: 'Measurement was successfully created.' }
+          format.json { render :show, status: :created, location: @measurement }
+        else
+          format.html { render :new }
+          format.json { render json: @measurement.errors, status: :unprocessable_entity }
+        end
+      end
+    else
+      @measurement = Measurement.new
+    end
   end
 
   # GET /measurements/1/edit
@@ -140,5 +155,9 @@ class MeasurementsController < ApplicationController
   # Never trust parameters from the scary internet, only allow the white list through.
   def measurement_params
     params.require(:measurement).permit(:temperature, :humidity, :lightLevel, :device_id)
+  end
+  # sem require
+  def measurement_params_no_require
+    params.permit(:temperature, :humidity, :lightLevel, :device_id)
   end
 end
